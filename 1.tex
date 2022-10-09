@@ -1,0 +1,16 @@
+\section{Here are three easy applications of Bayes' theorem:}
+
+\begin{enumerate}[label=\textbf{\Alph*}.]
+    \item Suppose the rate $R$ of visible galactic supernovae is unknown but that supernovae follow a Poisson distribution. In the past 10 centuries astronomers have observed four supernovae in our galaxy. Assuming a uniform prior for the rate $R$, use Bayes' theorem to calculate the probability distribution for $R$. Now repeat the calculation, assuming this time that the prior for $R$ is uniform in $\log_{10}(R)$ (i.e. it's equally probable that the true rate is between 0.02 and 0.2 as it is that it is between 0.2 and 2.0). Plot the resulting posterior probability distribution for $R$ in both cases.
+
+    \todo[inline]{put plots here}
+
+    \item Measurements are drawn from a uniform distribution spanning the interval (0, m). The probability of getting a measurement outside of this range is zero. The endpoint m is not well-known, but a prior experiment yields a Gaussian prior of m = 3 +/- 1. You take three measurements, getting values of 2.5, 3.1, and 2.9. Use Bayes' theorem to calculate and plot the new probability distribution for m.
+
+    \todo[inline]{put plot here}
+
+    \item Suppose that an unmanned rocket is being launched, and that at the time of the launch a certain electronic component is either functioning or not functioning. In the control centre there is a warning light that is not completely reliable. If the electronic component is not functioning, the warning light goes on with probability 1/2; if the component is functioning, the warning light goes on with probability 1/3. At the time of launch, the operator looks at the light and must decide whether to abort the launch. If she aborts the launch when the component is functioning well, she wastes \$2M. If she doesn't abort the launch but the component has failed, she wastes \$5M. If she aborts the launch when the component is malfunctioning, or if she lets the launch proceed when the component is working normally, there is no cost. Suppose that the prior probability of the component failing is 2/5. During launch the warning light doesn't go on. From a costs standpoint, should she abort the mission or not? Compute and compare the expected cost of launching to the expected cost of aborting, given that the light didn't go on.
+
+    She should abort the mission. See code for now this was derived.
+
+\end{enumerate}

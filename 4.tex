@@ -1,0 +1,22 @@
+\section{Retirement investments.}
+
+\begin{enumerate}[label=\textbf{\Alph*}.]
+
+    \item The percentage yield on an investment has a Gaussian distribution with mean of 8\% and standard deviation (SD) of 15\%. (A yield of 8\% would mean the amount of money increases by a factor of 1.08 in a year. A yield of -8\% would mean multiplying by 0.92 instead.) Suppose that you put \$3000 into a retirement account investing in this item on January 1st of every year, starting in 2018. What is the mean amount of money you will have in the account on Dec 31, 2047? Show a plot of the distribution of the amount of money on that date for 1000 trials of the "experiment". What is the SD? Hand in your code or equivalent documentation.
+
+    \todo[inline]{how to deal with dec 31st vs jan 1?}
+
+    \item Suppose now that the retirement account contains three classes of investments: Canadian stocks, foreign stocks, and bonds. The yields on these three investments each vary randomly but with some correlation. Here is the yield information for each investment: $\mu_C = 8\%, \sigma_C = 15\%, \mu_F = 8\%, \sigma_F = 15\%, \mu_B = 5\%, \sigma_B = 7\%, \rho_{CF}=0.50, \rho_{CB}=0.20, \rho_{FB}=0.05$. On January 1 of each year you put \$1000 into each class of investment. Show the distribution of the total amount of money in your account on Dec 31, 2047. What are the mean and SD?
+
+
+
+    \item Now suppose we add a procedure called "rebalancing". On January 1 of each year we contribute a total of \$3000 to the account, but at the same time we redistribute the total amount of money in the account evenly between the three investments. How does this change the total amount on Dec 31, 2047? Show a plot of the distribution, and report the mean and SD as well.
+
+    Commentary: You should find that although the total amount of money with rebalancing is slightly lower than in Part B, the SD is significantly smaller. The rebalancing procedure effectively forces you to sell investments when they're high and buy more of an investment when it's low. This effect is even more important when one accounts for the fact that the yield in one year is not completely independent of the yield in the next year---there is a small correlation that decreases with time which is not modelled in this problem. The net effect of this correlation is often that periods of high yield tend to be followed by periods of lower yield, and vice versa.
+
+    Retirement planning is in general a matter of optimizing the allocations to multiple types of investments in such a way as to yield the maximum probability of having "enough". High yield is of course good, but so is low variance. Having twice as much money as you need is a very different beast than having half as much as you need!
+
+    Ideally what you would want would be high yield investments with as little correlation as possible, so as to lower the variance. An investment strategy only slightly modified from the basic one in this problem, implemented with passively managed index funds, will generally outperform most actively management portfolios!
+
+\end{enumerate}
+
