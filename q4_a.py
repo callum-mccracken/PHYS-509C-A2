@@ -32,6 +32,8 @@ averages = np.mean(values, axis=0)
 stds = np.std(values, axis=0)
 plt.plot(years, averages, c='k')
 plt.errorbar(years, averages, stds, c='k')
+plt.xlabel("Year")
+plt.ylabel("Dollars")
 plt.savefig("q4_a.png")
 
 print("Value Dec 31, 2047:", averages[-1])

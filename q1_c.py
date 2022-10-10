@@ -38,27 +38,28 @@ import pandas as pd
 hypotheses = "fail", "no fail"
 prior_probs = 2/5, 3/5
 priors = pd.Series(prior_probs, hypotheses)
+print("priors")
+print(priors)
 
 # probabilities that we see NO light in each case
 likelihoods = 1/2, 1 - 1/3
+print("likelihoods")
+print(likelihoods)
 normalization_factor = (priors * likelihoods).sum()
+print("normalization")
+print(normalization_factor)
 
 # probs of failure given NO light seen
 posteriors = likelihoods * priors / normalization_factor
-
+print("posteriors")
+print(posteriors)
 # launch cost = p(fail|light)cost(fail|light) + p(~fail|light)cost(~fail|light)
 p_fail, p_nofail = posteriors
 # the numbers come from the question statement, e.g. 5M for a failed launch
 launch_cost = 5 * p_fail + 0 * p_nofail  # in millions
 no_launch_cost = 0 * p_fail + 2 * p_nofail  # in millions
-
+print("costs")
 print(launch_cost, no_launch_cost)
 
 # From a costs standpoint, should she abort the mission or not?
 print("launch" if launch_cost < no_launch_cost else "no launch")
-
-plt.title("Q1. c)")
-plt.xlabel("")
-plt.ylabel("posterior probability")
-plt.bar(hypotheses, posteriors)
-plt.savefig("q1_c.png")

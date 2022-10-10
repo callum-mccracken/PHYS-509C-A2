@@ -39,17 +39,25 @@ years = np.array(range(2018, 2048))
 values = np.zeros((len(trials), len(years)))
 
 for i, trial in enumerate(trials):
-    current_value = 3000
+    current_value_C = 1000
+    current_value_F = 1000
+    current_value_B = 1000
     for j, year in enumerate(years):
-        yld = random.gauss(mu=0.08, sigma=0.15)  # yield for this year
-        current_value = 3000 + (1+yld) * current_value
-        values[i, j] = current_value
+        # canadian stocks yield
+        yld_C = random.gauss(mu=0.08, sigma=0.15)
+        Y = random.gauss(mu=0, sigma=0.15)  # another Gaussian
+        yld_F = Y - yld_C  # linear combo to get foreign stock yield
+        yld_B = random.gauss(mu=0.05, sigma=0.174785583) + Y  # same w bonds
+        current_value_C = 1000 + (1+yld_C) * current_value_C
+        current_value_F = 1000 + (1+yld_F) * current_value_F
+        current_value_B = 1000 + (1+yld_B) * current_value_B
+        values[i, j] = current_value_C + current_value_F + current_value_B
     plt.scatter(years, values[i], alpha=0.05, c='b')
 averages = np.mean(values, axis=0)
 stds = np.std(values, axis=0)
 plt.plot(years, averages, c='k')
 plt.errorbar(years, averages, stds, c='k')
-plt.savefig("q4_a.png")
+plt.savefig("q4_b.png")
 
 print("Value Dec 31, 2047:", averages[-1])
 print("Standard deviation:", stds[-1])

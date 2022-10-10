@@ -1,54 +1,29 @@
 """
-For question 1. b)
+For Question 1, B.
 
-Measurements are drawn from a uniform distribution on the interval (0, m).
-The probability of getting a measurement outside of this range is zero.
-
-The endpoint m is not well-known,
-but a prior experiment yields a Gaussian prior of m = 3 +/- 1.
-
-You take three measurements, getting values of 2.5, 3.1, and 2.9.
-
-Use Bayes's theorem to calculate / plot the new probability distribution for m.
+Derivation is in q1.tex.
 """
+from math import factorial
 from matplotlib import pyplot as plt
+import matplotlib
 import numpy as np
 from scipy.integrate import quad
-from utils import gaussian_pdf, uniform_pdf
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
-observations = [2.5, 3.1, 2.9]
+m_vals = np.arange(0.01, 12, 0.01)
 
-# use Bayes' theorem to calculate the probability
-# distribution for R.
-m_step = 0.01
-m_vals = np.arange(0.01, 500, m_step)
-priors = gaussian_pdf(m_vals, mu=3, sigma=1)
+def unnorm_posterior(m):
+    if m < 3.1:
+        return 0
+    else:
+        return 1/m**3 * np.exp(-(m-3)**2 / 2)
+normalization = quad(unnorm_posterior, 0, np.inf)[0]
+posterior = np.array([
+    unnorm_posterior(m) for m in m_vals]) / normalization
 
-def likelihood_func(m_val):
-    """Single-variable function for integrating."""
-    # product of individual likelihoods bc independent measurements (I assume)
-    unif_probs = [uniform_pdf(x=obs, start=0, end=m_val)
-                  for obs in observations]
-    return gaussian_pdf(m_val, mu=3, sigma=1) * np.prod(unif_probs, axis=0)
-
-def likelihood_func_single(m_val):
-    """Single-variable function for integrating."""
-    # product of individual likelihoods bc independent measurements (I assume)
-    unif_probs = [uniform_pdf(x=obs, start=0, end=m_val)
-                  for obs in observations]
-    return np.prod(unif_probs, axis=0)
-
-
-
-likelihood = likelihood_func_single(m_vals)
-normalization = quad(likelihood_func, 0, np.inf)[0]
-posterior = likelihood * priors / normalization
-
-print(sum(posterior) * m_step)
-
-plt.title("Q1. b)")
+plt.title("Q1, B.")
 plt.xlabel("m")
-plt.ylabel("posterior probability")
+plt.ylabel("Posterior Probability Density")
 plt.plot(m_vals, posterior)
-plt.xlim(0,20)
 plt.savefig("q1_b.png")

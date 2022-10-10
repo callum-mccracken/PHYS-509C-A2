@@ -8,6 +8,7 @@
 \usepackage{physics}
 \usepackage{todonotes} 
 \usepackage{subfiles}
+\usepackage{float}
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{url}
@@ -37,23 +38,11 @@
 \maketitle
 \Large{Code for this assignment is here:
 
-\url{https://github.com/callum-mccracken/PHYS-509C-A1}
+\url{https://github.com/callum-mccracken/PHYS-509C-A2}
 
-It's in a bit of a strange format since I make it write the LaTeX file that I use for making the document you're reading, but here are the highlights:
-
-\begin{itemize}
-    \item Open the file with \texttt{numpy.loadtxt()}
-    \item Get the mean with \texttt{numpy.mean()}
-    \item Get the standard deviation with \texttt{numpy.std()}
-    \item Get the correlation coefficient with \texttt{numpy.corrcoef()}
-    \item Get the skew with \texttt{scipy.stats.skew()}
-    \item Use \texttt{scipy.stats.chi2.pdf()} for the chi-squared PDF
-    \item Integrate using \texttt{scipy.integrate.quad()}
-\end{itemize}
-}
+(Many of the questions this time were quite long so I've paraphrased.)
 
 \newpage
-
 \subfile{1}
 \newpage
 \subfile{2}
