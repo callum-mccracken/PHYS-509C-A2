@@ -12,73 +12,56 @@ Calculate the Bayesian 95\% central interval on the fraction of people in Santa 
 
 We want to find the distribution of the true positive rate in the population (and then get the 95\% interval), $P(\text{real pos})$.
 
-We have positive test probabilities.
+Relevant variables, $R_{TP}, R_{FP}, R_{TN}, R_{FN}, R_P, R_N$ ($P$=Positive, $N$=Negative, $T$=True, $F$=False).
 
-A positive test could have come from a true positive or a false positive
+Use Bayes to get probability distributions for 3 of these (just three since $R_P = 1 - R_N, R_{TP} = 1 - R_{FP}, R_{TN} = 1 - R_{FN}$).
+
+Each one of these 3 follows a binomial distribution, so
+
+\textbf{Distribution for $P(R_{FP}|\text{data from control group 1})$}:
+
+Prior: $P(R_{FP}) = 1$
+
+Data: in our control group 1, $N_1 = 3324, N_{FP,1} = 16$.
+
+Likelihood (binomial): $P(N_1=3324, N_{FP,1}=16 | R_{FP}) = {N_1 \choose N_{FP,1}} R_{FP}^{N_{FP,1}} (1-R_{FP,1})^{N_1-N_{FP,1}}$
+
+Normalization:
 \begin{align*}
-    P(\text{test, pos}) &= P(\text{test, true pos})P(\text{real, pos}) + P(\text{test, false pos})P(\text{real, neg}) \\
-    &= P(\text{test, true pos})P(\text{real, pos}) + P(\text{test, false pos})(1 - P(\text{real, pos})) \\
+    P(N_1=3324, N_{FP,1}=16) = \int_0^1 dR_{FP} {N_1 \choose N_{FP,1}} R_{FP}^{N_{FP,1}} (1-R_{FP})^{N_1-N_{FP,1}} \\
+\end{align*}
+
+Posterior:
+\begin{align*}
+    P(R_{FP}|N_1=3324, N_{FP,1}=16) &= \frac{P(R_{FP}) P(N_1=3324, N_{FP,1}=16 | R_{FP})}{P(N_1=3324, N_{FP,1}=16)} \\
+    &= \frac{R_{FP}^{N_{FP,1}} (1-R_{FP,1})^{N_1-N_{FP,1}}}{\int_0^1 dR_{FP} R_{FP}^{N_{FP,1}} (1-R_{FP})^{N_1-N_{FP,1}}} \\
+\end{align*}
+
+\textbf{Similarly, the other distributions:}
+\begin{align*}
+    P(R_{FN}|N_2=157, N_{FN,2}=27) 
+    &= \frac{R_{FN}^{N_{FN,2}} (1-R_{FN,2})^{N_2-N_{FN,2}}}{\int_0^1 dR_{FN} R_{FN}^{N_{FN,2}} (1-R_{FN})^{N_2-N_{FN,2}}} \\
 \end{align*}
 
 \begin{align*}
-    \frac{P(\text{test, pos}) - P(\text{test, false pos})}{P(\text{test, true pos}) - P(\text{test, false pos})} &= P(\text{real, pos}) \\
+    P(R_{P}| N_t=3330, N_{P,t}=50) 
+    &= \frac{R_{P}^{N_{P,t}} (1-R_{P,t})^{N_t-N_{P,t}}}{\int_0^1 dR_{P} R_{P}^{N_{P,t}} (1-R_{P})^{N_t-N_{P,t}}} \\
 \end{align*}
-The question says to marginalize over false positive and false negative rates, write it in terms of those
 
+What we really want is the PDF for the probability of having antibodies $P(A)$. Let's find that by relating the things we already have, make it a variable, say $a$.
+
+A positive test could have come from a true positive or a false positive, so
 \begin{align*}
-    \frac{P(\text{test, pos}) - P(\text{test, false pos})}{1-P(\text{test, false neg}) - P(\text{test, false pos})} &= P(\text{real, pos}) \\
+    R_{P} &= R_{TP}a + R_{FP}(1-a) \\
+    \frac{R_{P} - R_{FP}}{R_{TP} - R_{FP}} &= a  \\
+    \frac{R_{P} - R_{FP}}{(1-R_{FP}) - R_{FP}} &= a  \\
 \end{align*}
 
-And rewrite using shorter variable names (most variable names should be clear, I used $A$ for antibodies, $F$=False, $N$=negative, $P$=positive):
-\begin{align*}
-    \frac{P(P) - P(FP)}{1-P(FN) - P(FP)} &= P(A) \\
-\end{align*}
+We have PDFs for all those variables, use transformations to get the prior PDF for $a$.
+
+\todo[inline]{How to get that? I can't use convolutions like on A1... Do I do two convolutions for numerator and denominator then something else for the ratio?}
+
+Finally marginalize over $R_{FP}, R_{FN}$, and plot
 
 
-The priors: 
 
-$P(A) = P(P) = P(FP) = P(FN) = 1$ (uniform between 0 and 1)
-
-Likelihood of seeing our data:
-
-(Here our data is $P(FP) = \frac{16}{3324}, P(FN) = \frac{27}{157}$)
-\begin{align*}
-    P(D|R_{P}, R_{FP}, R_{FN}) = P(D_1|R_{P}, R_{FP}, R_{FN})P(D_2|R_{P}, R_{FP}, R_{FN}) = \frac{R_P - R_{FP}}{1 - R_{FN} - R_{FP}} \\
-\end{align*}
-
-Probability of Data (we have two ):
-\begin{align*}
-    P(D) &= P() \\
-\end{align*}
-for uniform $R$,
-\begin{align*}
-    P(k) &= \int_0^\infty \frac{1}{m-n} \frac{e^{-RT}(RT)^k}{k!} dR \\
-    &= \frac{1}{m-n}\frac{1}{k!} \int_0^\infty e^{-RT}(RT)^k dR \\
-    &= \frac{1}{m-n}\frac{1}{k!}\frac{1}{T} \int_0^\infty e^{-\lambda}(\lambda)^k d\lambda \\
-    &= \frac{1}{m-n}\frac{1}{k!}\frac{1}{T} k! \\
-    &= \frac{1}{m-n}\frac{1}{T} \\
-\end{align*}
-or for uniform $\log_{10}(R)$
-\begin{align*}
-    P(k) &= \int_0^\infty \frac{1}{\ln(m)-\ln(n)}\frac{1}{R} \frac{e^{-RT}(RT)^k}{k!} dR \\
-    &= \frac{1}{\ln(m)-\ln(n)} \int_0^\infty T \frac{1}{RT} \frac{e^{-RT}(RT)^k}{k!} dR \\
-    &= \frac{1}{\ln(m)-\ln(n)} \int_0^\infty \frac{e^{-\lambda}(\lambda)^{k-1}}{k!} d\lambda &[\lambda = RT]\\
-    &= \frac{1}{\ln(m)-\ln(n)}\frac{1}{k} \\
-\end{align*}
-
-Now calculate posteriors:
-
-Uniform $R$:
-\begin{align*}
-    P(R|k) &= \frac{P(k|R)P(R)}{P(k)}\\
-    &= \frac{\frac{e^{-RT}(RT)^k}{k!}\frac{1}{m-n}}{\frac{1}{m-n}\frac{1}{T}}\\
-    &= \frac{\frac{e^{-RT}(RT)^k}{k!}}{\frac{1}{T}}\\
-    &= \frac{Te^{-RT}(RT)^k}{k!}\\
-\end{align*}
-
-Uniform $\log_{10}(R)$
-\begin{align*}
-    P(R|k) &= \frac{P(k|R)P(R)}{P(k)}\\
-    &= \frac{\frac{e^{-RT}(RT)^k}{k!}\frac{1}{\ln(m)-\ln(n)} \frac{1}{R}}{\frac{1}{\ln(m)-\ln(n)}\frac{1}{k}}\\
-    &= \frac{Te^{-RT}(RT)^{k-1}}{(k-1)!}\\
-\end{align*}

@@ -37,7 +37,7 @@ def gaussian_pdf(x, mu, sigma):
     """
     Get a Gaussian probability density function.
 
-    pdf(x) = 1/sqrt(2sigma)exp(-(x-mu)^2/sigma^2)
+    pdf(x) = 1/(sqrt(2pi)sigma)exp(-(x-mu)^2/(2sigma^2))
 
     x = value to evaluate pdf
     mu = mean
