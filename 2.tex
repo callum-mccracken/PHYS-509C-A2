@@ -10,7 +10,7 @@
 
 Calculate the Bayesian 95\% central interval on the fraction of people in Santa Clara County who actually had antibodies for COVID-19, marginalizing over the false positive and false negative rates. Assume flat priors on all parameters. Submit a plot of the posterior distribution for the true incidence rate as well as your code or calculation.
 
-We want to find the distribution of the true positive rate in the population (and then get the 95\% interval), $P(\text{real pos})$.
+We want to find the distribution of the true disease in the population and then get the 95\% interval.
 
 Relevant variables, $R_{TP}, R_{FP}, R_{TN}, R_{FN}, R_P, R_N$ ($P$=Positive, $N$=Negative, $T$=True, $F$=False).
 
@@ -61,7 +61,6 @@ We have PDFs for all those variables, use transformations to get the prior PDF f
 
 \todo[inline]{How to get that? I can't use convolutions like on A1... Do I do two convolutions for numerator and denominator then something else for the ratio?}
 
-Finally marginalize over $R_{FP}, R_{FN}$, and plot
-
+Finally marginalize over $R_{FP}, R_{FN}$, and plot:
 
 

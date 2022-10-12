@@ -31,44 +31,21 @@ y_data = np.array([484, 501, 520, 535, 554, 565, 579, 593, 635, 651, 654])
 def exponential_form(x, C=1, B=1, A=1):
     return C - B*np.exp(-A*x)
 
-def prob_data(x, y, C, B, A, sigma):
-    return gaussian_pdf(y, mu=exponential_form(x,C,B,A), sigma=np.abs(sigma))
 
-def prob_data_no_B(x, y, C, A, sigma):
-    return quad(lambda B: prob_data(x, y, C, B, A, sigma), a=-np.inf, b=np.inf)[0]
-
-def prob_data_no_B_or_A(x, y, C, sigma):
-    return quad(lambda A: prob_data_no_B(x, y, C, A, sigma), a=-np.inf, b=np.inf)[0]
+def neg_log_likelihood(C, B, A):
+    return -np.sum((y_data - exponential_form(x_data, C, B, A)))
 
 
-def neg_log_likelihood(C, sigma):
-    return -np.sum([prob_data_no_B_or_A(x, y, C, sigma) for x, y, in zip(x_data, y_data)])
-
-
-# def nll_marginalized(C, sigma):
-#     return dblquad(
-#         lambda x,y: neg_log_likelihood(C, x, y, sigma),
-#         a=0, b=-np.inf,
-#         gfun=0, hfun=np.inf)[0]
-# 
-# Cs, sigmas = np.meshgrid(np.arange(0,1000,10), np.arange(0,10,0.1))
-# nlls = np.zeros_like(Cs)
-# for index, (c, sig) in enumerate(zip(Cs, sigmas)):
-#     nlls[index] = nll_marginalized(c, sig)
-# plt.plot(Cs, sigmas, c=nlls)
-# plt.show()
 def nll(params):
     """for integration purposes, with a single input variable"""
     return neg_log_likelihood(*params)
 
 
-#print(prob_data(x_data[0], y_data[0], 924, 300, 0.016, 10))
-#print(prob_data_no_B_or_A(x_data[0], y_data[0], 924, 10))
 
-print(nll([924, 10]))
-exit()
+print(nll([924, 0.016, 300]))
+print(nll([924, 300, 0.016]))
 
-optimal_params = minimize(nll, x0=(924,10))
+optimal_params = minimize(nll, x0=(924, 300, 0.016))
 print(optimal_params)
 
 C_0=770

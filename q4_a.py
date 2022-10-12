@@ -28,13 +28,21 @@ for i, trial in enumerate(trials):
         current_value = 3000 + (1+yld) * current_value
         values[i, j] = current_value
     plt.scatter(years, values[i], alpha=0.05, c='b')
-averages = np.mean(values, axis=0)
+means = np.mean(values, axis=0)
 stds = np.std(values, axis=0)
-plt.plot(years, averages, c='k')
-plt.errorbar(years, averages, stds, c='k')
+plt.plot(years, means, c='k')
+plt.errorbar(years, means, stds, c='k')
 plt.xlabel("Year")
 plt.ylabel("Dollars")
+plt.savefig("q4_a_justforme.png")
+plt.cla()
+plt.clf()
+
+plt.hist(values[:,-1], bins=20)
+plt.xlabel("Dollar Value on Dec 31, 2047")
+plt.ylabel("Number of trials")
 plt.savefig("q4_a.png")
 
-print("Value Dec 31, 2047:", averages[-1])
+
+print("Value on Dec 31, 2047:", means[-1])
 print("Standard deviation:", stds[-1])

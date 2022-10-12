@@ -1,4 +1,6 @@
+Overall: need to make the code sexy
+
 1: Done.
 2: Not started.
 3: Not started.
-4: Done but seems suspicious...
+4: Done.
