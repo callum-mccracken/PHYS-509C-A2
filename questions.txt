@@ -1,1 +1,0 @@
-- for Q1b, can we assume our measurements are independent?

@@ -2,57 +2,36 @@
 
 If we assume that the data follows an exponential plateau, approaching some steady state value C, then that means for any $t$ our expected $y$ (concentration in ppm) is
 \begin{align*}
-    y = C - B e^{-At}
+    y(t) = C - B e^{-At}
 \end{align*}
 
 To include the error as a fit parameter, let's say (since we have no other reason to pick a different distribution) that for every $t$ we have a Gaussian distribution with mean $\mu = C - B e^{-At}$ and standard deviation $\sigma_y$.
 
-With that, we can calculate the likelihood:
+With that, we can do a maximum likelihood fit.
 
 \begin{align*}
-    L &= \prod P(x_i, y_i, A, B, C, \sigma_y) \\
-    &= \prod \frac{1}{\sqrt{2\pi}\sigma_y}\exp\left(-\frac{\left(y_i - C + B e^{-At_i}\right)^2}{2\sigma^2}\right) \\
-    &\propto \exp\left(-\sum \frac{\left(y_i - C + B e^{-At_i}\right)^2}{2\sigma^2}\right) \\
-    &\propto \exp\left(-\frac{1}{2\sigma^2}\sum \left(y_i - C + B e^{-At_i}\right)^2\right) \\
-    -\ln L &\propto \sum \left(y_i - C + B e^{-At_i}\right)^2 \\
+    L &= \prod_i P(y(t_i)=y_i) \\
+    -\ln(L) &= -\ln(\prod_i P(y(t_i)=y_i)) \\
+    -\ln(L) &= \sum_i -\ln(P(y(t_i)=y_i)) \\
 \end{align*}
 
-We only care about $C$ and $\sigma$ though, get rid of the others by setting derivatives to zero
-\begin{align*}
-    \frac{\d}{\d C}(-\ln L(A,B,C)) &\propto \sum 2\left(y_i - C + B e^{-At_i}\right)(-1)
-    0 &\propto \sum y_i - N C + B \sum e^{-At_i} \\
-    C & \bar{y} + B \overline{e^{-At}} \\
-\end{align*}
+I fit this numerically, and got the results here:
 
 \begin{align*}
-    -\ln L(A,B) &\propto \sum \left(y_i - \bar{y} + B \overline{e^{-At}} + B e^{-At_i}\right)^2 \\
-    \frac{\d}{\d B}-\ln L(A,B) &\propto \sum \left(y_i - \bar{y} + B \overline{e^{-At}} + B e^{-At_i}\right)e^{-At_i} \\
-    0 &\propto \overline{y e^{-At}} - \bar{y}\overline{e^{-At}} + B \overline{e^{-At}}^2 + B \overline{e^{-2At}} \\
-    \bar{y}\overline{e^{-At}} - \overline{y e^{-At}} &\propto  + B \overline{e^{-At}}^2 + B \overline{e^{-2At}} \\
-    \operatorname{cov}(y, e^{-At}) &\propto B \operatorname{cov}(e^{-At}, e^{-At}) \\
-    \frac{\operatorname{cov}(y, e^{-At})}{\operatorname{cov}(e^{-At}, e^{-At})} &\propto B  \\
+    C &= 923 \\
+    B &= 440 \\
+    A &= 0.008875\\
+    \sigma_y &= 2.77 \\
 \end{align*}
+
+Then how much of that is due to error in $t$?
+
+Well if the error in $t$ is 1 minute, then the error in the exponential is given as follows (using error propagation equations):
 
 \begin{align*}
-    -\ln L(A) &\propto \sum \left(y_i - \bar{y} + \frac{\operatorname{cov}(y, e^{-At})}{\operatorname{cov}(e^{-At}, e^{-At})} \overline{e^{-At}} + B e^{-At_i}\right)^2 \\
-    \frac{\d}{\d B}-\ln L(A,B) &\propto \sum \left(y_i - \bar{y} + B \overline{e^{-At}} + B e^{-At_i}\right)e^{-At_i} \\
-    0 &\propto \overline{y e^{-At}} - \bar{y}\overline{e^{-At}} + B \overline{e^{-At}}^2 + B \overline{e^{-2At}} \\
-    \bar{y}\overline{e^{-At}} - \overline{y e^{-At}} &\propto  + B \overline{e^{-At}}^2 + B \overline{e^{-2At}} \\
-    \operatorname{cov}(y, e^{-At}) &\propto B \operatorname{cov}(e^{-At}, e^{-At}) \\
-    \frac{\operatorname{cov}(y, e^{-At})}{\operatorname{cov}(e^{-At}, e^{-At})} &\propto B  \\
+    E &= e^{-At} \\
+    \sigma_E &= Ae^{-At}\sigma_t \\
 \end{align*}
 
+If we use $\sigma_t = 1$ (minute) and $A=0.008875$ from before, evaluated at the minimum measured $t$ to maximize uncertainty, i.e. $t=0$, we get the uncertainty from $t$ is $A=0.008875$.
 
-
-\begin{align*}
-    \frac{\d}{\d B}(-\ln L) &\propto \frac{\d}{\d A}\sum \left(y_i - C + B e^{-At_i}\right)e^{-At_i} \\
-    &\propto \sum 2\left(y_i - C + B e^{-At_i}\right)^2(-t_iB e^{-At_i}) \\
-    0 &\propto \sum \left(y_i - C + B e^{-At_i}\right)^2(-t_iB e^{-At_i}) \\
-\end{align*}
-
-To minimize this, I tried setting all the derivatives to zero and solving algebraically, but that was nasty. Instead, I tried solving numerically (see the code)and got this:
-
-
-
-
-\todo{Still need to figure out how to deal with $\sigma_t=1$. Should I replace $t_i$ with a random variable $\mathcal{\mu=t_i, \sigma=\sigma_t}$?}
