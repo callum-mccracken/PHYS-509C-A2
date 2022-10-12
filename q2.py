@@ -1,64 +1,55 @@
 from matplotlib import pyplot as plt
 import numpy as np
-from scipy.integrate import quad
-from utils import binomial_pmf, uniform_pdf
+from scipy.integrate import dblquad
+from utils import binomial_pmf
+import scipy.special as sc
+import matplotlib
 
-N_TEST = 3330
-N_CONTROL_2 = 157
-N_CONTROL_1 = 3324
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
 
-N_POS_IN_TEST = 50
+# note: for speed reasons I've substituted
+# integral(p^k(1-p)^(n-k) from 0 to 1) = beta(k+1, n-k+1)
 
-N_FALSE_POS_IN_CONTROL_1 = 16
-N_TRUE_POS_IN_CONTROL_1 = 0
-N_FALSE_NEG_IN_CONTROL_1 = 0
-N_TRUE_NEG_IN_CONTROL_1 = N_CONTROL_1 - N_FALSE_POS_IN_CONTROL_1
+def prob_false_pos(false_pos_rate):
+    prior = 1
+    k=16
+    n=3324
+    likelihood = binomial_pmf(k=k, n=n, p=false_pos_rate)
+    normalization = sc.beta(k+1,n-k+1)
+    return prior * likelihood / normalization
 
+def prob_false_neg(false_neg_rate):
+    prior = 1
+    k=27
+    n=157
+    likelihood = binomial_pmf(k=k, n=n, p=false_neg_rate)
+    normalization = sc.beta(k+1,n-k+1)
+    return prior * likelihood / normalization
 
-def prob_n_pos_control_1(n_pos, rate):
-    """binomial, chances of getting n positives in control 1"""
-    binomial_pmf(k=n_pos, n=N_CONTROL_1, p=rate)
+def prob_pos(pos_rate):
+    prior = 1
+    k=50
+    n=3330
+    likelihood = binomial_pmf(k=k, n=n, p=pos_rate)
+    normalization = sc.beta(k+1,n-k+1)
+    return prior * likelihood / normalization
 
+def prob_antibodies(false_pos_rate, false_neg_rate, pos_rate):
+    return (pos_rate - false_pos_rate*pos_rate) / (
+        1 - false_neg_rate*(1-pos_rate) - false_pos_rate*pos_rate)
 
-N_TRUE_POS_IN_CONTROL_2 = 130
-N_FALSE_POS_IN_CONTROL_2 = 0
-N_FALSE_NEG_IN_CONTROL_2 = N_CONTROL_2 - N_TRUE_POS_IN_CONTROL_2
-N_TRUE_NEG_IN_CONTROL_2 = 0
+pos_rates = np.arange(0, 1, 0.01)
 
-
-def prob_n_pos_control_2(n_pos, rate):
-    """binomial, chances of getting n positives in control 1"""
-    binomial_pmf(k=n_pos, n=N_CONTROL_2, p=rate)
-
-
-# Calculate the Bayesian 95% central interval on the fraction
-# of people in Santa Clara County who actually had antibodies for COVID-19,
-# marginalizing over the false positive and false negative rates.
-# Assume flat priors on all parameters.
-
-real_antibody_rates = np.arange(0, 1, 0.001)
-
-priors = uniform_pdf(real_antibody_rates, start=0, end=1)
-
-def likelihood_func(real_ab_rate):
-    """Single-variable function for integrating."""
-    # prob of getting data given real_ab_rate
-    n_pos_control_1 = N_CONTROL_1 * real_ab_rate
-    prob_control_1 = prob_n_pos_control_1(n_pos, )
-    prob_control_2 = prob_n_pos_control_2()
-    return prob_control_1 * prob_control_2
-
-def likelihood_func_single(m_val):
-    """Single-variable function for integrating."""
-    # product of individual likelihoods bc independent measurements (I assume)
-    unif_probs = [uniform_pdf(x=obs, start=0, end=real_antibody_rates)
-                  for obs in observations]
-    return np.prod(unif_probs, axis=0)
-
-
-likelihoods = likelihood_func_single(real_antibody_rates)
-normalization = quad(likelihood_func, 0, 1)[0]
-posteriors = likelihoods * priors / normalization
+marginalized_posteriors = []
+for pos_rate in pos_rates:
+    marginalized = dblquad(
+        lambda x, y: prob_antibodies(x, y, pos_rate), 0, 1, 0, 1)[0]
+    marginalized_posteriors.append(marginalized)
 
 # Submit a plot of the posterior distribution for the true incidence rate
-plt.plot(real_antibody_rates, posteriors)
+plt.plot(pos_rates, marginalized_posteriors)
+plt.xlabel("Probability of positive tests")
+plt.ylabel("Probability of really having antibodies")
+plt.savefig("q2.png")
+

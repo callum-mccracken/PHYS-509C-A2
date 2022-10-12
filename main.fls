@@ -1032,6 +1032,11 @@ INPUT ./2.tex
 INPUT 2.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
+INPUT ./q2.png
+INPUT ./q2.png
+INPUT q2.png
+INPUT ./q2.png
+INPUT ./q2.png
 INPUT ./3.tex
 INPUT ./3.tex
 INPUT ./3.tex
@@ -1039,6 +1044,11 @@ INPUT 3.tex
 INPUT ./3.tex
 INPUT ./3.tex
 INPUT 3.tex
+INPUT ./q3.png
+INPUT ./q3.png
+INPUT q3.png
+INPUT ./q3.png
+INPUT ./q3.png
 INPUT ./4.tex
 INPUT ./4.tex
 INPUT ./4.tex

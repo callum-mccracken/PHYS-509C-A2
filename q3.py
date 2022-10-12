@@ -21,18 +21,22 @@ from matplotlib import pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
 from scipy import stats
+import matplotlib
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
+
 
 # t = minutes after start time
 t_data = np.array([0, 6, 10, 14, 19, 24, 29, 33, 46, 54, 57])
 # y = ppm
 y_data = np.array([484, 501, 520, 535, 554, 565, 579, 593, 635, 651, 654])
 
-# our exponential plateau functional form
-def fit_function(t,C,B,A):
+def fit_function(t, C, B, A):
+    """our exponential plateau functional form"""
     return C - B*np.exp(-A*t)
 
-# negative log likelihood, as a function with 1 parameter so we can minimize
 def neg_ll(params):
+    """negative log likelihood, as a function with 1 parameter to minimize"""
     C, B, A, sigma_y = params
     y_pred = fit_function(t_data, C, B, A)
     return -np.sum(stats.norm.logpdf(y_data, loc=y_pred, scale=sigma_y))
@@ -49,4 +53,6 @@ C_0, B_0, A_0, sigma_0 = results.x
 print(C_0, B_0, A_0, sigma_0)
 plt.plot(t_data, y_data, 'go')
 plt.errorbar(t_data, fit_function(t_data, C_0, B_0, A_0), yerr=sigma_0)
+plt.xlabel("Time in minutes past the first data point")
+plt.ylabel("CO2 Concentration")
 plt.savefig("q3.png")

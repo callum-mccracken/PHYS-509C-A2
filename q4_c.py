@@ -10,7 +10,10 @@ Show a plot of the distribution, and report the mean and SD as well.
 
 import matplotlib.pyplot as plt
 import numpy as np
-import random
+import matplotlib
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
+
 
 trials = np.array(range(1000))
 years = np.array(range(2018, 2048))
@@ -65,8 +68,5 @@ plt.xlabel("Dollar Value on Dec 31, 2047")
 plt.ylabel("Number of trials")
 plt.savefig("q4_c.png")
 
-
 print("Value on Dec 31, 2047:", means[-1])
 print("Standard deviation:", stds[-1])
-
-

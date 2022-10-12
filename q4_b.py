@@ -32,6 +32,11 @@ combination with the other two yields.)
 
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
+
+
 
 trials = np.array(range(1000))
 years = np.array(range(2018, 2048))
