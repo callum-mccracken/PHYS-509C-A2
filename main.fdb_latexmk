@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1665549407 "/home/callum/Documents/Classes/PHYS 509C/PHYS-509C-A2/main.tex" "main.pdf" "main" 1665549407
+["pdflatex"] 1666289504 "/home/callum/Documents/Classes/PHYS 509C/PHYS-509C-A2/main.tex" "main.pdf" "main" 1666289504
   "/etc/texmf/web2c/texmf.cnf" 1650909748 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/callum/Documents/Classes/PHYS 509C/PHYS-509C-A2/main.tex" 1665388329 1096 ebb36fae617da04c58596f757167ef63 ""
+  "/home/callum/Documents/Classes/PHYS 509C/PHYS-509C-A2/main.tex" 1666289503 1094 fdedf1dee403c98b3a8c579eb795077f ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm" 1136768653 1536 3290a75021d32d016616fe527bc9884c ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -191,9 +191,9 @@
   "2.tex" 1665549406 3440 0fa2eb7b29e869b5ff620d3daca3d2af ""
   "3.tex" 1665547179 1440 2b633f1c956c7fa591bfe4689160d1c7 ""
   "4.tex" 1665547262 2536 e86ad73a757fdd874dfe69239f3e3e60 ""
-  "main.aux" 1665549407 1268 fb6137ca17955e9c100edc2fd64c4579 "pdflatex"
-  "main.out" 1665549407 641 8e72506cecc6e178a98351147ad6995a "pdflatex"
-  "main.tex" 1665388329 1096 ebb36fae617da04c58596f757167ef63 ""
+  "main.aux" 1666289504 1268 fb6137ca17955e9c100edc2fd64c4579 "pdflatex"
+  "main.out" 1666289504 641 8e72506cecc6e178a98351147ad6995a "pdflatex"
+  "main.tex" 1666289503 1094 fdedf1dee403c98b3a8c579eb795077f ""
   "q1_a.png" 1665367571 39956 906d0f3d43acfdb24533e7bd66b55260 ""
   "q1_b.png" 1665367567 19030 de913f84ba1503842890effe47c179c8 ""
   "q2.png" 1665548625 25049 e2c6c5e2aaaa74c98e02908633cfd245 ""
